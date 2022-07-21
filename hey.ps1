@@ -1,4 +1,5 @@
 #This script will gather information on the current system and save the report file to the desktop as a text file.
+Set-ExecutionPolicy RemoteSigned
 
 $ipconfig = ipconfig /all
 $netconfig = net config workstation
@@ -20,7 +21,7 @@ $operating_system =  Get-CimInstance -ClassName Win32_OperatingSystem | Select-O
 $local_user_owner =  Get-CimInstance -ClassName Win32_OperatingSystem | Select-Object -Property NumberOfLicensedUsers,NumberOfUsers,RegisteredUser
 $logon_session =  Get-CimInstance -ClassName Win32_LogonSession
 $User_Logged =  Get-CimInstance -ClassName Win32_ComputerSystem -Property UserName
-
+$System_information =   systeminfo
 
 #Writes a report based on these variable to desktop a file called "report.txt"
 $file = $desktoppath + "\\report.txt"
@@ -60,10 +61,7 @@ $local_user_owner | Out-File $file -Append
 $logon_session | Out-File $file -Append
 "======= USER LOGGED =======================================" | Out-File $file -append
 $User_Logged | Out-File $file -Append
+"======= All System Information =======================================" | Out-File $file -append
+$System_information | Out-File $file -Append
+
 "======= END =======================================" | Out-File $file -append
-
-
-
-
-
-
